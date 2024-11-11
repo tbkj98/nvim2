@@ -5,16 +5,29 @@ return {
         'williamboman/mason-lspconfig.nvim',
     },
     config = function()
-        print('Lsp config method')
         require('mason').setup({})
 
         local opts = {
             ensure_installed = {
-                'lua_ls'
+                'lua_ls',
+                'clangd'
             }
         }
 
         require('mason-lspconfig').setup(opts)
-        require('lspconfig').lua_ls.setup({})
+
+        -- lua_ls opts
+        local lua_ls_opts = {
+            settings = {
+                Lua = {
+                    diagnostics = {
+                        globals = { 'vim' }
+                    }
+                }
+            }
+        }
+
+        require('lspconfig').lua_ls.setup(lua_ls_opts)
+        require('lspconfig').clangd.setup({})
     end
 }
