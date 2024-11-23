@@ -1,5 +1,4 @@
 local opt = vim.opt
-
 -- Session Management
 vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions,globals"
 
@@ -28,9 +27,9 @@ opt.cursorline = true
 opt.termguicolors = true
 opt.background = "dark"
 opt.signcolumn = "yes"
-vim.diagnostic.config {
-  float = { border = "rounded" }, -- add border to diagnostic popups
-}
+vim.diagnostic.config({
+	float = { border = "rounded" }, -- add border to diagnostic popups
+})
 
 -- Backspace
 opt.backspace = "indent,eol,start"
@@ -48,9 +47,11 @@ opt.mouse = ""
 -- Folding
 opt.foldlevel = 20
 opt.foldmethod = "expr"
-opt.foldexpr = "nvim_treesitter#foldexpr()" -- Utilize Treesitter folds
-
 
 -- Always show tabline
 vim.o.showtabline = 2
 opt.hls = false
+
+-- Spell check
+opt.spelllang = "en_us"
+opt.spell = true

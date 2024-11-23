@@ -1,33 +1,125 @@
 return {
-    'neovim/nvim-lspconfig',
-    dependencies = {
-        'williamboman/mason.nvim',
-        'williamboman/mason-lspconfig.nvim',
-    },
-    config = function()
-        require('mason').setup({})
+	-- LSP Configuration
+	-- https://github.com/neovim/nvim-lspconfig
+	"neovim/nvim-lspconfig",
+	event = "VeryLazy",
+	dependencies = {
+		-- LSP Management
+		-- https://github.com/williamboman/mason.nvim
+		{ "williamboman/mason.nvim" },
+		-- https://github.com/williamboman/mason-lspconfig.nvim
+		{ "williamboman/mason-lspconfig.nvim" },
 
-        local opts = {
-            ensure_installed = {
-                'lua_ls',
-                'clangd'
-            }
-        }
+		-- Auto-Install LSPs, linters, formatters, debuggers
+		-- https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim
+		{ "WhoIsSethDaniel/mason-tool-installer.nvim" },
 
-        require('mason-lspconfig').setup(opts)
+		-- Useful status updates for LSP
+		-- https://github.com/j-hui/fidget.nvim
+		{
+			"j-hui/fidget.nvim",
+			opts = {
+				notification = {
+					window = {
+						winblend = 0,
+					},
+				},
+			},
+		},
 
-        -- lua_ls opts
-        local lua_ls_opts = {
-            settings = {
-                Lua = {
-                    diagnostics = {
-                        globals = { 'vim' }
-                    }
-                }
-            }
-        }
+		-- Additional lua configuration, makes nvim stuff amazing!
+		-- https://github.com/folke/neodev.nvim
+		{ "folke/neodev.nvim", opts = {} },
+		{
+			"SmiteshP/nvim-navic",
+			opts = {
+				separator = "->",
+				highlight = true,
+				depth_limit = 5,
+			},
+		},
+	},
+	config = function()
+		require("mason").setup()
+		require("mason-lspconfig").setup({
+			-- Install these LSPs automatically
+			ensure_installed = {
+				"bashls",
+				"cssls",
+				"clangd",
+				"emmet_ls",
+				"gradle_ls",
+				"groovyls",
+				"lua_ls",
+				"jdtls",
+				"jsonls",
+				"lemminx",
+				"marksman",
+				"quick_lint_js",
+				"yamlls",
+				"ts_ls",
+			},
+		})
 
-        require('lspconfig').lua_ls.setup(lua_ls_opts)
-        require('lspconfig').clangd.setup({})
-    end
+		require("mason-tool-installer").setup({
+			-- Install these linters, formatters, debuggers automatically
+			ensure_installed = {
+				"java-debug-adapter",
+				"java-test",
+			},
+		})
+
+		-- There is an issue with mason-tools-installer running with VeryLazy, since it triggers on VimEnter which has already occurred prior to this plugin loading so we need to call install explicitly
+		-- https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim/issues/39
+		vim.api.nvim_command("MasonToolsInstall")
+
+		local lspconfig = require("lspconfig")
+		local lsp_capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+		local navic = require("nvim-navic")
+
+		local lsp_attach = function(client, bufnr)
+			-- Create your keybindings here...
+
+			-- Attaching to navic symbol helper in winbar
+			navic.attach(client, bufnr)
+		end
+
+		-- Call setup on each LSP server
+		require("mason-lspconfig").setup_handlers({
+			function(server_name)
+				-- Don't call setup for jdtls Java LSP because it will be setup from a separate config
+				if server_name ~= "jdtls" then
+					lspconfig[server_name].setup({
+						on_attach = lsp_attach,
+						capabilities = lsp_capabilities,
+					})
+				end
+			end,
+		})
+
+		-- Lua LSP settings
+		lspconfig.lua_ls.setup({
+			settings = {
+				Lua = {
+					diagnostics = {
+						-- Get the language server to recognize the `vim` global
+						globals = { "vim" },
+					},
+				},
+			},
+		})
+
+		-- Globally configure all LSP floating preview popups (like hover, signature help, etc)
+		local open_floating_preview_default = vim.lsp.util.open_floating_preview
+
+		-- Ignore unused variable warnings
+		local open_floating_preview_default_dup = function(contents, syntax, opts, ...)
+			opts = opts or {}
+			opts.border = opts.border or "rounded" -- Set border to rounded
+			open_floating_preview_default(contents, syntax, opts, ...)
+		end
+
+		vim.lsp.util.open_floating_preview = open_floating_preview_default_dup
+	end,
 }
