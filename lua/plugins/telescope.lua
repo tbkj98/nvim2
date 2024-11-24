@@ -94,7 +94,7 @@ return {
 			-- Launch command line
 			vim.keymap.set(
 				"n",
-				"<leader>:",
+				"<leader><leader>",
 				"<cmd> Telescope cmdline<cr>",
 				{ desc = "Telescope: List command history" }
 			)
