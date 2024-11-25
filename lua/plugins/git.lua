@@ -5,7 +5,7 @@ return {
 			attach_to_untracked = true,
 			current_line_blame_opts = {
 				virt_text = true,
-				delay = 10,
+				delay = 500,
 			},
 		}
 		require("gitsigns").setup(opts)

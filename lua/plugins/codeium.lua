@@ -10,6 +10,9 @@ return {
 			virtual_text = {
 				enabled = true,
 			},
+			filetypes = {
+				TelescopePrompt = false,
+			},
 		}
 		require("codeium").setup(opts)
 	end,
