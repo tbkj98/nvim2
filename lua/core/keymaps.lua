@@ -80,3 +80,24 @@ end, generate_keymap_opts("Debugger: Toggle breakpoint"))
 -- START: Breadcrumb navigation
 vim.keymap.set("n", "<leader>bn", require("dropbar.api").pick, generate_keymap_opts("Breadcrumb: Pick item"))
 -- END: Breadcrumb navigation
+
+-- START: Git Keymaps
+vim.keymap.set(
+	"n",
+	"<leader>gl",
+	'<cmd>lua require "gitsigns".blame_line()<CR>',
+	generate_keymap_opts("Git: Blame line")
+)
+vim.keymap.set(
+	"n",
+	"<leader>gp",
+	'<cmd>lua require "gitsigns".preview_hunk()<CR>',
+	generate_keymap_opts("Git: Preview hunk")
+)
+vim.keymap.set(
+	"n",
+	"<leader>gt",
+	'<cmd>lua require "gitsigns".toggle_current_line_blame()<CR>',
+	generate_keymap_opts("Git: Toggle current line blame")
+)
+-- END: Git Keymaps

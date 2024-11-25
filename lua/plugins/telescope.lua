@@ -42,6 +42,11 @@ return {
 				},
 				defaults = {
 					file_ignore_patterns = file_ignore_opts,
+					path_display = function(_, path)
+						local tail = require("telescope.utils").path_tail(path)
+						return string.format("%s (%s)", tail, path), { { { 1, #tail }, "Constant" } }
+					end,
+					dynamic_preview_title = true,
 				},
 			}
 
@@ -61,7 +66,19 @@ return {
 			local builtin = require("telescope.builtin")
 			local file_browser = telescope.extensions.file_browser
 
+			local find_files_without_preview = function()
+				builtin.find_files({
+					previewer = false,
+				})
+			end
+
 			vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Telescope: Find files" })
+			vim.keymap.set(
+				"n",
+				"<leader>fp",
+				find_files_without_preview,
+				{ desc = "Telescope: Find files (w/o preview)" }
+			)
 			vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Telescope: Find buffers" })
 			vim.keymap.set("n", "<leader>fg", builtin.live_grep, {
 				desc = "Telescope: Find text in current working directory",
@@ -94,8 +111,6 @@ return {
 			-- Launch command line
 			local cmdline_opts = { desc = "Telescope: List command history", silent = true }
 			vim.keymap.set("n", "<leader><leader>", "<cmd> Telescope cmdline<cr>", cmdline_opts)
-			vim.keymap.set("v", "<leader><leader>", "<cmd> Telescope cmdline<cr>", cmdline_opts)
-			vim.keymap.set("i", "<leader><leader>", "<cmd> Telescope cmdline<cr>", cmdline_opts)
 
 			-- Keymap to find keymaps
 			vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "Telescope: Find keymaps" })
