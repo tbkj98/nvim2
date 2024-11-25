@@ -92,12 +92,10 @@ return {
 
 			-- keymaps to list command history
 			-- Launch command line
-			vim.keymap.set(
-				"n",
-				"<leader><leader>",
-				"<cmd> Telescope cmdline<cr>",
-				{ desc = "Telescope: List command history" }
-			)
+			local cmdline_opts = { desc = "Telescope: List command history", silent = true }
+			vim.keymap.set("n", "<leader><leader>", "<cmd> Telescope cmdline<cr>", cmdline_opts)
+			vim.keymap.set("v", "<leader><leader>", "<cmd> Telescope cmdline<cr>", cmdline_opts)
+			vim.keymap.set("i", "<leader><leader>", "<cmd> Telescope cmdline<cr>", cmdline_opts)
 
 			-- Keymap to find keymaps
 			vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "Telescope: Find keymaps" })
