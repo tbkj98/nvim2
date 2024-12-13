@@ -39,6 +39,7 @@ return {
 			local opts = {
 				extensions = {
 					file_browser = file_browser_opts,
+					fzf = {},
 				},
 				defaults = {
 					file_ignore_patterns = file_ignore_opts,
@@ -57,10 +58,13 @@ return {
 			telescope.load_extension("file_browser")
 
 			-- Telescope UI selector config
-			-- telescope.load_extension("ui-select")
+			telescope.load_extension("ui-select")
 
 			-- Telescope command line extension
 			telescope.load_extension("cmdline")
+
+			-- Telescope FZF extension
+			telescope.load_extension("fzf")
 
 			-- Keymaps
 			local builtin = require("telescope.builtin")

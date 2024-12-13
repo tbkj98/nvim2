@@ -50,7 +50,7 @@ opt.foldmethod = "expr"
 
 -- Always show tabline
 vim.o.showtabline = 2
-opt.hls = false
+opt.hlsearch = false
 
 -- Spell check
 opt.spelllang = "en_us"
