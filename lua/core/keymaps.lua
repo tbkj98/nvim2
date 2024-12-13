@@ -29,8 +29,12 @@ vim.keymap.set("n", "<leader>w=", "<c-w>=", generate_keymap_opts("Window: reset 
 -- END: Window navigation keymaps
 
 -- START: Tabs navigation keymaps
-vim.keymap.set("n", "<M-]>", "gt", generate_keymap_opts("Tabs: Next tab"))
-vim.keymap.set("n", "<M-[>", "gT", generate_keymap_opts("Tabs: Previous tab"))
+vim.keymap.set("n", "<M-]>", "gt", generate_keymap_opts("Tabs: Normal mode -> Next tab"))
+vim.keymap.set("n", "<M-[>", "gT", generate_keymap_opts("Tabs: Normal mode -> Previous tab"))
+vim.keymap.set("t", "<M-]>", "<C-\\><C-n>gt", generate_keymap_opts("Tabs: Terminal mode -> Next tab"))
+vim.keymap.set("t", "<M-[>", "<C-\\><C-n>gT", generate_keymap_opts("Tabs: Terminal mode -> Previous tab"))
+vim.keymap.set("i", "<M-]>", "<Esc>gt", generate_keymap_opts("Tabs: Insert mode -> Next tab"))
+vim.keymap.set("i", "<M-[>", "<Esc>gT", generate_keymap_opts("Tabs: Insert mode -> Previous tab"))
 -- move current tab to previous position
 vim.keymap.set("n", "<leader>tmp", ":-tabmove<CR>", generate_keymap_opts("Tabs: Move tab to left"))
 -- move current tab to next position
