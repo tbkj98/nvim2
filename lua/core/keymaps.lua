@@ -105,3 +105,8 @@ vim.keymap.set(
 	generate_keymap_opts("Git: Toggle current line blame")
 )
 -- END: Git Keymaps
+
+-- START: Quickfix list navigation
+vim.keymap.set("n", "[q", "<cmd> cprev <CR>", generate_keymap_opts("Quickfix: Next item"))
+vim.keymap.set("n", "]q", "<cmd> cnext <CR>", generate_keymap_opts("Quickfix: Previous item"))
+-- END: Quickfix list navigation

@@ -6,8 +6,8 @@ return {
 		"rcarriga/nvim-notify",
 	},
 	config = function()
-		-- Setting up noice
-		require("noice").setup({
+		-- Setting up Noice
+		local opts = {
 			lsp = {
 				override = {
 					["vim.lsp.util.convert_input_to_markdown_lines"] = true,
@@ -16,12 +16,14 @@ return {
 				},
 			},
 			presets = {
-				bottom_search = true,
+				bottom_search = false,
 				command_palette = false,
 				long_message_to_split = true,
 				inc_rename = false,
 				lsp_doc_border = true,
 			},
-		})
+		}
+
+		require("noice").setup(opts)
 	end,
 }

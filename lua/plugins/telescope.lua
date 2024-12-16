@@ -118,6 +118,9 @@ return {
 
 			-- Keymap to find keymaps
 			vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "Telescope: Find keymaps" })
+
+			-- Keymap to load quickfix list
+			vim.keymap.set("n", "<leader>fq", builtin.quickfix, { desc = "Telescope: Find quickfix" })
 		end,
 	},
 	{
