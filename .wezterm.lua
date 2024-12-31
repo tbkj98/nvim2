@@ -9,11 +9,13 @@ local config = wezterm.config_builder()
 -- For example, changing the color scheme:
 -- config.color_scheme = 'Catppuccin Mocha'
 config.color_scheme = 'tokyonight'
+-- config.color_scheme = 'Gruvbox dark, hard (base16)'
 
 -- Fonts
--- config.font = wezterm.font('Fira Code', { weight = 'Medium' })
-config.font = wezterm.font('ComicShannsMono Nerd Font')
-config.font_size = 12.5
+config.font = wezterm.font('FiraCode Nerd Font Mono', { weight = 'Medium' })
+-- config.font = wezterm.font('ComicShannsMono Nerd Font')
+config.font_size = 12
+config.line_height = 1.2
 
 -- Background opacity
 -- config.window_background_opacity = 0.9

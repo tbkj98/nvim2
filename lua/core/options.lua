@@ -55,3 +55,9 @@ opt.hlsearch = false
 -- Spell check
 opt.spelllang = "en_us"
 opt.spell = true
+
+-- Make block cursor
+opt.guicursor = ""
+
+-- Disable swap file
+opt.swapfile = false

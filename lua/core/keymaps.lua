@@ -41,40 +41,6 @@ vim.keymap.set("n", "<leader>tmp", ":-tabmove<CR>", generate_keymap_opts("Tabs: 
 vim.keymap.set("n", "<leader>tmn", ":+tabmove<CR>", generate_keymap_opts("Tabs: Move tab to right"))
 -- END: Tabs navigation keymaps
 
--- START: LSP Keymaps
-local list_methods = function()
-	require("telescope.builtin").treesitter({ default_text = ":method:" })
-end
-
-local list_functions = function()
-	require("telescope.builtin").treesitter({ default_text = ":function:" })
-end
-
-local list_diagnostics_errors = function()
-	require("telescope.builtin").diagnostics({ default_text = ":E:" })
-end
-
-local list_diagnostics_warnings = function()
-	require("telescope.builtin").diagnostics({ default_text = ":W:" })
-end
-
-local list_diagnostics_hints = function()
-	require("telescope.builtin").diagnostics({ default_text = ":H:" })
-end
-
-vim.keymap.set("n", "<leader>ld", vim.lsp.buf.definition, generate_keymap_opts("LSP: Go to definition"))
-vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, generate_keymap_opts("LSP: Rename symbol"))
-vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, generate_keymap_opts("LSP: Code action"))
-vim.keymap.set("n", "<leader>lh", vim.lsp.buf.hover, generate_keymap_opts("LSP: Hover"))
-vim.keymap.set("n", "<leader>lI", vim.lsp.buf.implementation, generate_keymap_opts("LSP: Find implementations"))
-vim.keymap.set("n", "<leader>lR", vim.lsp.buf.references, generate_keymap_opts("LSP: Find references"))
-vim.keymap.set("n", "<leader>lM", list_methods, generate_keymap_opts("LSP: Find methods"))
-vim.keymap.set("n", "<leader>lF", list_functions, generate_keymap_opts("LSP: Find functions"))
-vim.keymap.set("n", "<leader>lE", list_diagnostics_errors, generate_keymap_opts("LSP: Find diagnostics errors"))
-vim.keymap.set("n", "<leader>lW", list_diagnostics_warnings, generate_keymap_opts("LSP: Find diagnostics warnings"))
-vim.keymap.set("n", "<leader>lW", list_diagnostics_hints, generate_keymap_opts("LSP: Find diagnostics hints"))
--- END: LSP Keymaps
-
 -- START: Debugger Keymaps
 vim.keymap.set("n", "<leader>db", function()
 	require("dap").toggle_breakpoint()
