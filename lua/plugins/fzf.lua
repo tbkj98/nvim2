@@ -52,8 +52,7 @@ return {
 
 		vim.keymap.set("n", "<leader><leader>", fzf.command_history, { desc = "FZF: command history" })
 
-		vim.keymap.set("n", "<leader>ld", fzf.lsp_definitions, { desc = "FZF: LSP -> Definitions" })
-		-- vim.keymap.set("n", "<leader>ld", vim.lsp.buf.definition, { desc = "FZF: LSP -> Definitions" })
+		vim.keymap.set("n", "<leader>ld", vim.lsp.buf.definition, { desc = "LSP -> Definitions" })
 		vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, { desc = "LSP -> Rename" })
 		vim.keymap.set("n", "<leader>la", fzf.lsp_code_actions, { desc = "FZF: LSP -> Code actions" })
 		vim.keymap.set("n", "<leader>lh", vim.lsp.buf.hover, { desc = "LSP: Hover" })
@@ -75,5 +74,8 @@ return {
 		)
 
 		vim.keymap.set("n", "<leader>ft", fzf.tabs, { desc = "FZF: Find tabs" })
+
+		-- Registering vim.ui.select
+		fzf.register_ui_select()
 	end,
 }
