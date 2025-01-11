@@ -1,3 +1,3 @@
 return {
-	"nvim-flutter/flutter-tools.nvim",
+  "nvim-flutter/flutter-tools.nvim",
 }

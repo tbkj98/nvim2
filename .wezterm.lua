@@ -14,8 +14,9 @@ config.color_scheme = "tokyonight"
 -- Fonts
 -- config.font = wezterm.font('FiraCode Nerd Font Mono', { weight = 'Medium' })
 config.font = wezterm.font("ComicShannsMono Nerd Font")
-config.font_size = 15
--- config.line_height = 1.2
+-- config.font = wezterm.font("MesloLGM Nerd Font")
+config.font_size = 14
+config.line_height = 1.0
 
 -- Background opacity
 -- config.window_background_opacity = 0.9

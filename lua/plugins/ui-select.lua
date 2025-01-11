@@ -1,7 +1,7 @@
 if true then
-	return {}
+  return {}
 end
 return {
-	"stevearc/dressing.nvim",
-	config = true,
+  "stevearc/dressing.nvim",
+  config = true,
 }
