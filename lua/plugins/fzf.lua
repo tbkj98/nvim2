@@ -17,16 +17,8 @@ return {
       "bin/",
     }
 
-    local keymap_opts = {
-      builtin = {
-        ["<C-d>"] = "preview-page-down",
-        ["<C-u>"] = "preview-page-up",
-      },
-    }
-
     local opts = {
       file_ignore_opts = file_ignore_opts,
-      keymap = keymap_opts,
     }
 
     local fzf = require("fzf-lua")

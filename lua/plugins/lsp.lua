@@ -67,7 +67,6 @@ return {
         "prettierd",
         "yamlfmt",
         "stylua",
-        "black",
       },
     })
 
