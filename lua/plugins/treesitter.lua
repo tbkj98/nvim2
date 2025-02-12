@@ -10,6 +10,7 @@ return {
         "javascript",
         "typescript",
         "json",
+        "bash",
       },
     }
 

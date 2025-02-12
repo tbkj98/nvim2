@@ -38,6 +38,9 @@ return {
         depth_limit = 5,
       },
     },
+    {
+      "RRethy/vim-illuminate",
+    },
   },
   config = function()
     require("mason").setup()

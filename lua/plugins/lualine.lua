@@ -11,16 +11,10 @@ return {
   opts = {
     options = {
       -- For more themes, see https://github.com/nvim-lualine/lualine.nvim/blob/master/THEMES.md
-      theme = "tokyonight", -- "auto, tokyonight, catppuccin, codedark, nord"
+      theme = "gruvbox-material", -- "auto, tokyonight, catppuccin, codedark, nord"
     },
     sections = {
-      lualine_x = {
-        {
-          require("noice").api.statusline.mode.get,
-          cond = require("noice").api.statusline.mode.has,
-          color = { fg = "#ff9e64" },
-        },
-      },
+      lualine_x = {},
       lualine_c = {
         {
           -- Customize the filename part of lualine to be parent/filename

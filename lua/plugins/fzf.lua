@@ -36,6 +36,7 @@ return {
 
     vim.keymap.set("n", "<leader>gs", fzf.git_stash, { desc = "Git: Stash" })
     vim.keymap.set("n", "<leader>gg", fzf.git_status, { desc = "Git: Status" })
+    vim.keymap.set("n", "<leader>gb", fzf.git_branches, { desc = "Git: Branch" })
 
     vim.keymap.set("n", "<leader>'", fzf.marks, { desc = "FZF: List marks" })
     vim.keymap.set("n", '<leader>"', fzf.registers, { desc = "FZF: List registers" })

@@ -20,25 +20,8 @@ function ApplyColors()
   -- Cursor/CursorLine config
   vim.api.nvim_set_hl(0, "CursorLine", { bg = "none", bold = true })
 
-  -- NvimTree color config
-  vim.api.nvim_set_hl(0, "NvimTreeNormal", { bg = "none", fg = "none" })
-  vim.api.nvim_set_hl(0, "NvimTreeCursorLine", { bg = "none", fg = "#0EF2EA" })
-  vim.api.nvim_set_hl(0, "NvimTreeNormalFloat", { bg = "none", fg = "none" })
-  vim.api.nvim_set_hl(0, "NvimTreeNormalFloatBorder", { bg = "none", fg = "none" })
-  vim.api.nvim_set_hl(0, "NvimTreeNormalNC", { bg = "none", fg = "none" })
-  vim.api.nvim_set_hl(0, "NvimTreeWinSeparator", { bg = "none", fg = "none" })
-
   -- Vertical left line of line numbers config
   vim.api.nvim_set_hl(0, "SignColumn", { bg = "none", fg = "none" }) -- Left side of number line coloring
-
-  -- Telescope background color config
-  vim.api.nvim_set_hl(0, "TelescopeSelectionCaret", { bg = "none", fg = "#0EF2EA", bold = true })
-  vim.api.nvim_set_hl(0, "TelescopeSelection", { bg = "none", fg = "#0EF2EA" })
-  vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = "none", fg = "none" })
-  vim.api.nvim_set_hl(0, "TelescopeResultsNormal", { bg = "none", fg = "none" })
-  vim.api.nvim_set_hl(0, "TelescopeBorder", { bg = "none" })
-  vim.api.nvim_set_hl(0, "TelescopePromptTitle", { bg = "none" })
-  vim.api.nvim_set_hl(0, "TelescopePromptBorder", { bg = "none" })
 end
 
 ApplyColors()
