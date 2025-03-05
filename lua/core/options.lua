@@ -63,3 +63,6 @@ opt.swapfile = false
 
 -- Enable global status line
 opt.laststatus = 3
+
+-- have 5 lines above or below the cursor
+opt.scrolloff = 5

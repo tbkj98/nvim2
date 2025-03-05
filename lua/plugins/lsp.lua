@@ -19,27 +19,9 @@ return {
     { "folke/neodev.nvim", opts = {} },
     {
       "SmiteshP/nvim-navic",
-      opts = {
-        separator = "->",
-        highlight = true,
-        depth_limit = 5,
-      },
-    },
-    {
-      "RRethy/vim-illuminate",
     },
     {
       "saghen/blink.cmp",
-      dependencies = "rafamadriz/friendly-snippets",
-      build = "cargo build --release",
-      config = function()
-        require("blink.cmp").setup({
-          signature = { enabled = true },
-          keymap = {
-            preset = "enter",
-          },
-        })
-      end,
     },
   },
   config = function()
