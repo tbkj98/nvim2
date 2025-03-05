@@ -1,24 +1,26 @@
+local generate_rg_opts = function(opts)
+  opts = opts or {}
+  local folder_ignore_opts = opts.folder_ignore_opts or {}
+
+  local rg_opts = "--hidden --files"
+  for _, folder_name in ipairs(folder_ignore_opts) do
+    rg_opts = rg_opts .. " -g '!" .. folder_name .. "'"
+  end
+
+  return rg_opts
+end
+
 return {
   "ibhagwan/fzf-lua",
   dependencies = { "nvim-tree/nvim-web-devicons" },
   config = function()
-    local file_ignore_opts = {
-      "node_modules/",
-      ".*.class",
-      ".gradle/",
-      "gradle/",
-      "build/",
-      ".settings/",
-      ".git/",
-      ".factorypath",
-      ".project",
-      ".classpath",
-      "dist",
-      "bin/",
-    }
+    local ignore_folders = { "gradle", ".gradle", "node_modules", ".git", ".settings" }
+    local rg_opts = generate_rg_opts({ folder_ignore_opts = ignore_folders })
 
     local opts = {
-      file_ignore_opts = file_ignore_opts,
+      files = {
+        rg_opts = rg_opts,
+      },
     }
 
     local fzf = require("fzf-lua")

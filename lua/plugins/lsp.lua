@@ -14,19 +14,6 @@ return {
     -- https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim
     { "WhoIsSethDaniel/mason-tool-installer.nvim" },
 
-    -- Useful status updates for LSP
-    -- https://github.com/j-hui/fidget.nvim
-    {
-      "j-hui/fidget.nvim",
-      opts = {
-        notification = {
-          window = {
-            winblend = 0,
-          },
-        },
-      },
-    },
-
     -- Additional lua configuration, makes nvim stuff amazing!
     -- https://github.com/folke/neodev.nvim
     { "folke/neodev.nvim", opts = {} },
@@ -40,6 +27,19 @@ return {
     },
     {
       "RRethy/vim-illuminate",
+    },
+    {
+      "saghen/blink.cmp",
+      dependencies = "rafamadriz/friendly-snippets",
+      build = "cargo build --release",
+      config = function()
+        require("blink.cmp").setup({
+          signature = { enabled = true },
+          keymap = {
+            preset = "enter",
+          },
+        })
+      end,
     },
   },
   config = function()
@@ -78,7 +78,7 @@ return {
     vim.api.nvim_command("MasonToolsInstall")
 
     local lspconfig = require("lspconfig")
-    local lsp_capabilities = require("cmp_nvim_lsp").default_capabilities()
+    local lsp_capabilities = require("blink.cmp").get_lsp_capabilities()
 
     local navic = require("nvim-navic")
 
@@ -88,6 +88,8 @@ return {
       -- Attaching to navic symbol helper in winbar
       navic.attach(client, bufnr)
     end
+
+    -- local lsp_capabilities = require("blink.cmp").get_lsp_capabilities()
 
     -- Call setup on each LSP server
     require("mason-lspconfig").setup_handlers({
@@ -120,7 +122,6 @@ return {
     -- Globally configure all LSP floating preview popups (like hover, signature help, etc)
     local open_floating_preview_default = vim.lsp.util.open_floating_preview
 
-    -- Ignore unused variable warnings
     local open_floating_preview_default_dup = function(contents, syntax, opts, ...)
       opts = opts or {}
       opts.border = opts.border or "rounded" -- Set border to rounded

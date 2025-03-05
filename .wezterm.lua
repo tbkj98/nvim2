@@ -8,8 +8,8 @@ local config = wezterm.config_builder()
 
 -- For example, changing the color scheme:
 -- config.color_scheme = 'Catppuccin Mocha'
--- config.color_scheme = "tokyonight"
-config.color_scheme = "Gruvbox Material (Gogh)"
+config.color_scheme = "tokyonight"
+-- config.color_scheme = "Gruvbox Material (Gogh)"
 
 -- Fonts
 -- config.font = wezterm.font('FiraCode Nerd Font Mono', { weight = 'Medium' })
@@ -22,7 +22,8 @@ config.line_height = 1.0
 -- config.window_background_opacity = 0.9
 
 config.colors = {
-  background = "#1D2021",
+  -- background = "#1D2021",
+  background = "#222436",
 }
 
 -- Window glass and wezterm tab bar

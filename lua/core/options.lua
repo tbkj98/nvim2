@@ -45,8 +45,7 @@ opt.splitbelow = true
 opt.mouse = ""
 
 -- Folding
-opt.foldlevel = 20
-opt.foldmethod = "expr"
+opt.foldmethod = "manual"
 
 -- Always show tabline
 vim.o.showtabline = 2
@@ -61,3 +60,6 @@ opt.guicursor = ""
 
 -- Disable swap file
 opt.swapfile = false
+
+-- Enable global status line
+opt.laststatus = 3

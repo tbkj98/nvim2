@@ -1,4 +1,7 @@
 -- Auto-completion / Snippets
+if true then
+  return {}
+end
 return {
   -- https://github.com/hrsh7th/nvim-cmp
   "hrsh7th/nvim-cmp",

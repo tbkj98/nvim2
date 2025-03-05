@@ -6,15 +6,26 @@ return {
     -- https://github.com/nvim-tree/nvim-web-devicons
     "nvim-tree/nvim-web-devicons", -- fancy icons
     -- https://github.com/linrongbin16/lsp-progress.nvim
-    "linrongbin16/lsp-progress.nvim", -- LSP loading progress
+    {
+      "linrongbin16/lsp-progress.nvim",
+      config = function()
+        require("lsp-progress").setup({})
+      end,
+    },
   },
   opts = {
     options = {
       -- For more themes, see https://github.com/nvim-lualine/lualine.nvim/blob/master/THEMES.md
-      theme = "gruvbox-material", -- "auto, tokyonight, catppuccin, codedark, nord"
+      theme = "tokyonight", -- "auto, tokyonight, catppuccin, codedark, nord"
     },
     sections = {
-      lualine_x = {},
+      lualine_x = { "encoding", "fileformat", "filetype" },
+      lualine_y = {
+        function()
+          return require("lsp-progress").progress()
+        end,
+      },
+      lualine_z = { "location" },
       lualine_c = {
         {
           -- Customize the filename part of lualine to be parent/filename
@@ -34,4 +45,15 @@ return {
       },
     },
   },
+  config = function(_, opts)
+    require("lualine").setup(opts)
+
+    -- To update LSP Progress in lualine
+    vim.api.nvim_create_augroup("lualine_augroup", { clear = true })
+    vim.api.nvim_create_autocmd("User", {
+      group = "lualine_augroup",
+      pattern = "LspProgressStatusUpdated",
+      callback = require("lualine").refresh,
+    })
+  end,
 }
