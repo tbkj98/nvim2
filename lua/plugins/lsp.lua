@@ -77,12 +77,24 @@ return {
     require("mason-lspconfig").setup_handlers({
       function(server_name)
         -- Don't call setup for jdtls Java LSP because it will be setup from a separate config
-        if server_name ~= "jdtls" then
+        if server_name == "jdtls" then
+          return
+        end
+
+        if server_name == "ts_ls" then
           lspconfig[server_name].setup({
+            root_dir = require("lspconfig.util").root_pattern("tsconfig.json", "jsconfig.json", "package.json"),
             on_attach = lsp_attach,
             capabilities = lsp_capabilities,
+            single_file_support = false,
           })
+          return
         end
+
+        lspconfig[server_name].setup({
+          on_attach = lsp_attach,
+          capabilities = lsp_capabilities,
+        })
       end,
     })
 
@@ -100,6 +112,13 @@ return {
         },
       },
     })
+
+    -- Setup deno LSP
+    lspconfig.denols.setup({
+      on_attach = lsp_attach,
+      capabilities = lsp_capabilities,
+    })
+    vim.g.markdown_fenced_languages = { "ts=typescript" }
 
     -- Globally configure all LSP floating preview popups (like hover, signature help, etc)
     local open_floating_preview_default = vim.lsp.util.open_floating_preview
