@@ -40,6 +40,7 @@ return {
         "marksman",
         "yamlls",
         "ts_ls",
+        "denols",
       },
     })
 
@@ -60,34 +61,18 @@ return {
     vim.api.nvim_command("MasonToolsInstall")
 
     local lspconfig = require("lspconfig")
-    local lsp_capabilities = require("blink.cmp").get_lsp_capabilities()
+    local lsp_capabilities = require("blink.cmp").get_lsp_capabilities({}, true)
 
     local navic = require("nvim-navic")
+    local lsp_attach = navic.attach
 
-    local lsp_attach = function(client, bufnr)
-      -- Create your keybindings here...
-
-      -- Attaching to navic symbol helper in winbar
-      navic.attach(client, bufnr)
-    end
-
-    -- local lsp_capabilities = require("blink.cmp").get_lsp_capabilities()
+    local manual_setup_lsps = { "jdtls", "ts_ls", "denols", "lua_ls" }
 
     -- Call setup on each LSP server
     require("mason-lspconfig").setup_handlers({
       function(server_name)
-        -- Don't call setup for jdtls Java LSP because it will be setup from a separate config
-        if server_name == "jdtls" then
-          return
-        end
-
-        if server_name == "ts_ls" then
-          lspconfig[server_name].setup({
-            root_dir = require("lspconfig.util").root_pattern("tsconfig.json", "jsconfig.json", "package.json"),
-            on_attach = lsp_attach,
-            capabilities = lsp_capabilities,
-            single_file_support = false,
-          })
+        -- Don't call setup for LSP because it will be setup from a separate config
+        if vim.list_contains(manual_setup_lsps, server_name) then
           return
         end
 
@@ -100,6 +85,8 @@ return {
 
     -- Lua LSP settings
     lspconfig.lua_ls.setup({
+      on_attach = lsp_attach,
+      lsp_capabilities = lsp_capabilities,
       settings = {
         Lua = {
           diagnostics = {
@@ -112,13 +99,6 @@ return {
         },
       },
     })
-
-    -- Setup deno LSP
-    lspconfig.denols.setup({
-      on_attach = lsp_attach,
-      capabilities = lsp_capabilities,
-    })
-    vim.g.markdown_fenced_languages = { "ts=typescript" }
 
     -- Globally configure all LSP floating preview popups (like hover, signature help, etc)
     local open_floating_preview_default = vim.lsp.util.open_floating_preview
