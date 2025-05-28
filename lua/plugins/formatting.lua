@@ -10,12 +10,16 @@ return {
         python = { "black" },
         javascript = { "prettierd" },
         typescript = { "prettierd" },
+        javascriptreact = { "prettierd" },
+        typescriptreact = { "prettierd" },
         java = { "google-java-format" },
         yaml = { "yamlfmt" },
+        go = { "gofumpt" },
       },
-      format_on_save = {
-        enabled = false,
-        lsp_fallback = true,
+      format_after_save = {
+        async = true,
+        enabled = true,
+        lsp_format = "fallback",
       },
     }
 
