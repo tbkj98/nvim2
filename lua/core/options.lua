@@ -14,7 +14,7 @@ opt.autoindent = true
 vim.bo.softtabstop = 4
 
 -- Line Wrapping
-opt.wrap = false
+opt.wrap = true
 
 -- Search Settings
 opt.ignorecase = true

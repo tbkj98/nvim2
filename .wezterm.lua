@@ -12,10 +12,12 @@ config.color_scheme = "tokyonight"
 -- config.color_scheme = "Gruvbox Material (Gogh)"
 
 -- Fonts
--- config.font = wezterm.font("FiraCode Nerd Font Mono", { weight = "Regular" })
-config.font = wezterm.font("ComicShannsMono Nerd Font")
+config.font = wezterm.font("FiraCode Nerd Font Mono", { weight = "Regular" })
+-- config.font = wezterm.font("ComicShannsMono Nerd Font")
+-- config.font = wezterm.font("SauceCodePro Nerd Font Mono")
 -- config.font = wezterm.font("MesloLGM Nerd Font Mono")
-config.font_size = 14
+-- config.font = wezterm.font("UbuntuSansMono Nerd Font Mono")
+config.font_size = 13.5
 config.line_height = 1.0
 
 -- Background opacity

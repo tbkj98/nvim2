@@ -32,7 +32,6 @@ return {
       ensure_installed = {
         "bashls",
         "clangd",
-        "emmet_ls",
         "gradle_ls",
         "lua_ls",
         "jdtls",

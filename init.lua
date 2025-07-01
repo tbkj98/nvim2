@@ -29,3 +29,5 @@ require("core.options")
 require("core.keymaps")
 -- User auto commands
 require("core.autocommands")
+-- Custom plugins
+require("custom.recent_files").setup()
