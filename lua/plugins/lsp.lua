@@ -40,6 +40,7 @@ return {
         "yamlls",
         "ts_ls",
         "denols",
+        "gopls",
       },
     })
 
@@ -52,6 +53,7 @@ return {
         "prettierd",
         "yamlfmt",
         "stylua",
+        "gofumpt",
       },
     })
 
@@ -65,7 +67,7 @@ return {
     local navic = require("nvim-navic")
     local lsp_attach = navic.attach
 
-    local manual_setup_lsps = { "jdtls", "ts_ls", "denols", "lua_ls" }
+    local manual_setup_lsps = { "jdtls", "ts_ls", "denols", "lua_ls", "gopls" }
 
     -- Call setup on each LSP server
     require("mason-lspconfig").setup_handlers({
@@ -95,6 +97,17 @@ return {
           format = {
             enable = false,
           },
+        },
+      },
+    })
+
+    -- Go LSP settings
+    lspconfig.gopls.setup({
+      settings = {
+        ["ui.inlayhint.hints"] = {
+          compositeLiteralFields = true,
+          constantValues = true,
+          parameterNames = true,
         },
       },
     })

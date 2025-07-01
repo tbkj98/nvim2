@@ -9,8 +9,25 @@ return {
         "java",
         "javascript",
         "typescript",
+        "tsx",
         "json",
         "bash",
+        "glimmer",
+        "prisma",
+        "go",
+        "html",
+        "lua",
+        "sql",
+        "vim",
+        "yaml",
+        "tmux",
+      },
+
+      highlight = {
+        enable = true,
+      },
+      indent = {
+        enable = true,
       },
     }
 

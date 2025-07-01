@@ -1,18 +1,16 @@
 return {
-  "christoomey/vim-tmux-navigator",
-  cmd = {
-    "TmuxNavigateLeft",
-    "TmuxNavigateDown",
-    "TmuxNavigateUp",
-    "TmuxNavigateRight",
-    "TmuxNavigatePrevious",
-    "TmuxNavigatorProcessList",
-  },
-  keys = {
-    { "<M-h>", "<cmd><C-U>TmuxNavigateLeft<cr>" },
-    { "<M-j>", "<cmd><C-U>TmuxNavigateDown<cr>" },
-    { "<M-k>", "<cmd><C-U>TmuxNavigateUp<cr>" },
-    { "<M-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
-    { "<M-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
-  },
+  "alexghergh/nvim-tmux-navigation",
+  config = function()
+    local opts = {
+      disable_when_zoomed = true, -- defaults to false
+      keybindings = {
+        left = "<M-h>",
+        down = "<M-j>",
+        up = "<M-k>",
+        right = "<M-l>",
+        previous = "<M-\\>",
+      },
+    }
+    require("nvim-tmux-navigation").setup(opts)
+  end,
 }

@@ -1,5 +1,6 @@
 return {
   "saghen/blink.cmp",
+  version = "1.2.0",
   dependencies = {
     "rafamadriz/friendly-snippets",
     {
@@ -10,7 +11,6 @@ return {
       end,
     },
   },
-  build = "cargo build --release",
   config = function()
     require("blink.cmp").setup({
       signature = { enabled = true },
