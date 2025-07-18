@@ -1,3 +1,8 @@
+-- Tabs and indentation
+vim.bo.tabstop = 4
+vim.bo.shiftwidth = 4
+vim.bo.softtabstop = 4
+
 -- JDTLS (Java LSP) configuration
 local jdtls = require("jdtls")
 local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
@@ -36,7 +41,6 @@ local config = {
     -- Eclipse jdtls location
     "-jar",
     vim.env.HOME .. "/.local/share/nvim/mason/share/jdtls/plugins/org.eclipse.equinox.launcher.jar",
-    -- TODO Update this to point to the correct jdtls subdirectory for your OS (config_linux, config_mac, config_win, etc)
     "-configuration",
     vim.env.HOME .. "/.local/share/nvim/mason/packages/jdtls/config_linux",
     "-data",

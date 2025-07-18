@@ -4,7 +4,7 @@ local win_id = nil
 local local_bufnr = -1
 local keymaps = {}
 local current_files = {}
-local buffer_times = {}
+local buffer_access_times = {}
 
 local function create_buf()
   local bufnr = vim.fn.bufnr(buf_name)
@@ -37,7 +37,7 @@ local function get_recent_files()
   end
 
   table.sort(recent, function(a, b)
-    return (buffer_times[a] or 0) > (buffer_times[b] or 0)
+    return (buffer_access_times[a] or 0) > (buffer_access_times[b] or 0)
   end)
 
   local files = {}
@@ -49,6 +49,12 @@ local function get_recent_files()
     end
   end
 
+  local max_files = 5 -- Limit to 5 files
+  -- Limit to 5 most recent files
+  if #files > max_files then
+    files = { unpack(files, 1, max_files) }
+  end
+
   return files
 end
 
@@ -56,7 +62,7 @@ local function refresh_keymaps()
   keymaps = {} -- reset previous
   local files = current_files or {}
   for i, file in ipairs(files) do
-    keymaps["g" .. i] = file -- e.g., g1 -> file path
+    keymaps[i .. "g"] = file -- e.g., g1 -> file path
   end
 
   -- Default enter opens file on current line
@@ -90,7 +96,7 @@ local function refresh(files)
 
   vim.api.nvim_buf_set_option(local_bufnr, "modifiable", true)
   vim.api.nvim_buf_set_lines(local_bufnr, 0, -1, false, display_lines)
-  vim.api.nvim_buf_set_option(local_bufnr, "modifiable", false)
+  vim.api.nvim_buf_set_option(local_bufnr, "modifiable", true)
 
   refresh_keymaps() -- Update keymaps after refreshing the buffer
 end
@@ -106,25 +112,31 @@ function M.open_window()
 
   keymaps = {} -- reset previous
   for i, file in ipairs(files) do
-    keymaps["g" .. i] = file -- e.g., g1 -> file path
+    keymaps[i .. "g"] = file -- e.g., g1 -> file path
   end
 
   vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, display_lines)
-  vim.api.nvim_buf_set_option(bufnr, "modifiable", false)
+  vim.api.nvim_buf_set_option(bufnr, "modifiable", true)
   vim.api.nvim_buf_set_option(bufnr, "buftype", "nofile")
   vim.api.nvim_buf_set_option(bufnr, "bufhidden", "wipe")
   vim.api.nvim_buf_set_option(bufnr, "filetype", "recentfiles")
-  -- Saving the current active window
-  local cur_win = vim.api.nvim_get_current_win()
 
-  vim.cmd("40vsplit")
-  win_id = vim.api.nvim_get_current_win()
-  vim.api.nvim_win_set_buf(win_id, bufnr)
-  vim.api.nvim_win_set_option(win_id, "number", false)
-  vim.api.nvim_win_set_option(win_id, "relativenumber", false)
+  local width = 25
+  local height = 5
+  local row = vim.o.lines - 6
+  local col = vim.o.columns - width
 
-  -- Refocusing cursor to original window
-  vim.api.nvim_set_current_win(cur_win)
+  win_id = vim.api.nvim_open_win(bufnr, false, {
+    relative = "editor",
+    row = row,
+    col = col,
+    width = width,
+    height = height,
+    style = "minimal",
+  })
+
+  vim.api.nvim_set_hl(0, "RecentFilesBGColor", { bg = "none" })
+  vim.api.nvim_set_option_value("winhighlight", "NormalFloat:RecentFilesBGColor", { win = win_id })
 
   refresh_keymaps() -- Set up keymaps for the recent files
 end
@@ -178,41 +190,17 @@ local function stop_watching()
   end
 end
 
-local function create_highlighting()
-  local square_bracket_open = "SquareBracketOpen"
-  local square_bracket_close = "SquareBracketClose"
-  local bracket_number = "BracketNumber"
-
-  vim.cmd([[
-      augroup RecentFilesHighlight
-          autocmd FileType recentfiles syntax match BracketNumber /^\[\zs\d\+\ze\]/
-          autocmd FileType recentfiles syntax match SquareBracketOpen /^\[/
-          autocmd FileType recentfiles syntax match SquareBracketClose /^\]/
-      augroup END
-  ]])
-
-  if not vim.api.nvim_get_hl(0, { name = square_bracket_open, link = true }) then
-    vim.api.nvim_set_hl(0, square_bracket_open, { fg = "#ff8800", bg = "#282828", bold = true })
-  end
-  if not vim.api.nvim_get_hl(0, { name = square_bracket_close, link = true }) then
-    vim.api.nvim_set_hl(0, square_bracket_close, { fg = "#ff8800", bg = "#282828", bold = true })
-  end
-  if not vim.api.nvim_get_hl(0, { name = bracket_number, link = true }) then
-    vim.api.nvim_set_hl(0, bracket_number, { fg = "#ff8800", bg = "#282828", bold = true })
-  end
-end
-
 function M.setup()
   -- Create a user command for toggling recent files
   vim.api.nvim_create_user_command("RecentFiles", M.toggle, {
     desc = "Toggle Recent Files Window",
   })
 
-  -- Keymap to toggle recent files
+  -- Keymap to toggle recent buffers
   vim.keymap.set("n", "<leader>br", M.toggle, { desc = "Buffers: Open toggle recent buffers" })
 
   -- Starting up the watcher
-  start_watching(500) -- Check every 1 Geconds
+  start_watching(500) -- Check every 500 milli Geconds
 
   vim.api.nvim_create_autocmd("VimLeave", {
     callback = function()
@@ -223,12 +211,9 @@ function M.setup()
   -- Hook: every time a buffer is entered, update access time
   vim.api.nvim_create_autocmd("BufEnter", {
     callback = function(args)
-      buffer_times[args.buf] = vim.loop.hrtime()
+      buffer_access_times[args.buf] = vim.loop.hrtime()
     end,
   })
-
-  -- TODO: Fix highlighting
-  -- create_highlighting()
 end
 
 return M

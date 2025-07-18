@@ -45,3 +45,4 @@ Treesitter
 return/!
 fs
 folderId
+tabline
