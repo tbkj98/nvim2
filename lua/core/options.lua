@@ -1,15 +1,18 @@
 local opt = vim.opt
 
 -- Session Management
-vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions,globals"
+vim.o.sessionoptions = "blank,buffers,curdir,folds,tabpages,winsize,winpos,terminal,localoptions,globals"
 
 -- Line Numbers
 opt.relativenumber = true
 opt.number = true
 
 -- Tabs & Indentation
+opt.tabstop = 4
+opt.shiftwidth = 4
 opt.expandtab = true
 opt.autoindent = true
+vim.bo.softtabstop = 4
 
 -- Line Wrapping
 opt.wrap = false

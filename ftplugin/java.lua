@@ -1,8 +1,3 @@
--- Tabs and indentation
-vim.bo.tabstop = 4
-vim.bo.shiftwidth = 4
-vim.bo.softtabstop = 4
-
 -- JDTLS (Java LSP) configuration
 local jdtls = require("jdtls")
 local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
