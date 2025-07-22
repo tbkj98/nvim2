@@ -19,5 +19,12 @@ return {
     -- Keymaps
     vim.keymap.set("n", "<leader>ha", require("harpoon.mark").add_file, { desc = "Harpoon: Mark file" })
     vim.keymap.set("n", "<leader>hh", require("harpoon.ui").toggle_quick_menu, { desc = "Harpoon: List marks" })
+
+    -- Set h<integer> keymaps for quick access to harpoon marks
+    for i = 1, 5 do
+      vim.keymap.set("n", "<leader>h" .. i, function()
+        require("harpoon.ui").nav_file(i)
+      end, { desc = "Harpoon: Navigate" .. i })
+    end
   end,
 }

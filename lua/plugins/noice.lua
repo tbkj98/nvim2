@@ -25,6 +25,14 @@ return {
         inc_rename = false,
         lsp_doc_border = true,
       },
+
+      messages = {
+        enabled = false,
+      },
+
+      notify = {
+        enabled = false,
+      },
     }
 
     require("noice").setup(opts)

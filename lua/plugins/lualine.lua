@@ -20,11 +20,6 @@ return {
     },
     sections = {
       lualine_x = {
-        {
-          require("noice").api.status.mode.get,
-          cond = require("noice").api.status.mode.has,
-          color = { fg = "#ff9e64" },
-        },
         "encoding",
         "fileformat",
         "filetype",
@@ -35,6 +30,7 @@ return {
         end,
       },
       lualine_z = { "location" },
+      lualine_a = {},
       lualine_c = {
         {
           -- Customize the filename part of lualine to be parent/filename

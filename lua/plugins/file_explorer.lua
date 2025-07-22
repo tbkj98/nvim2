@@ -1,12 +1,18 @@
 return {
-  "Eutrius/Otree.nvim",
-  lazy = false,
-  dependencies = {
+  {
     "stevearc/oil.nvim",
-    -- { "echasnovski/mini.icons", opts = {} },
-    "nvim-tree/nvim-web-devicons",
+    lazy = false,
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+    },
+    opts = {},
   },
-  config = function()
-    require("Otree").setup()
-  end,
+  {
+    "preservim/nerdtree",
+    lazy = false,
+    keys = {
+      { "<leader>ee", "<cmd>NERDTreeToggle<cr>", desc = "NERDTree: Toggle" },
+      { "<leader>ef", "<cmd>NERDTreeFind<cr>", desc = "NERDTree: Find File" },
+    },
+  },
 }
