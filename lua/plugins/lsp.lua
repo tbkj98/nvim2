@@ -17,18 +17,16 @@ return {
     -- Additional lua configuration, makes nvim stuff amazing!
     -- https://github.com/folke/neodev.nvim
     { "folke/neodev.nvim", opts = {} },
-    {
-      "SmiteshP/nvim-navic",
-    },
+
     {
       "saghen/blink.cmp",
     },
   },
   config = function()
-    require("mason").setup()
-    require("mason-lspconfig").setup({
+    local lsp_capabilities = require("blink.cmp").get_lsp_capabilities({}, true)
+
+    local mason_lspconfig_opts = {
       automatic_installation = true,
-      -- Install these LSPs automatically
       ensure_installed = {
         "bashls",
         "clangd",
@@ -42,7 +40,10 @@ return {
         "denols",
         "gopls",
       },
-    })
+    }
+
+    require("mason").setup()
+    require("mason-lspconfig").setup(mason_lspconfig_opts)
 
     require("mason-tool-installer").setup({
       -- Install these linters, formatters, debuggers automatically
@@ -62,31 +63,9 @@ return {
     vim.api.nvim_command("MasonToolsInstall")
 
     local lspconfig = require("lspconfig")
-    local lsp_capabilities = require("blink.cmp").get_lsp_capabilities({}, true)
-
-    local navic = require("nvim-navic")
-    local lsp_attach = navic.attach
-
-    local manual_setup_lsps = { "jdtls", "ts_ls", "denols", "lua_ls", "gopls" }
-
-    -- Call setup on each LSP server
-    require("mason-lspconfig").setup_handlers({
-      function(server_name)
-        -- Don't call setup for LSP because it will be setup from a separate config
-        if vim.list_contains(manual_setup_lsps, server_name) then
-          return
-        end
-
-        lspconfig[server_name].setup({
-          on_attach = lsp_attach,
-          capabilities = lsp_capabilities,
-        })
-      end,
-    })
 
     -- Lua LSP settings
     lspconfig.lua_ls.setup({
-      on_attach = lsp_attach,
       lsp_capabilities = lsp_capabilities,
       settings = {
         Lua = {
@@ -101,6 +80,11 @@ return {
       },
     })
 
+    lspconfig.clangd.setup({
+      lsp_capabilities = lsp_capabilities,
+      settings = {},
+    })
+
     -- Go LSP settings
     lspconfig.gopls.setup({
       settings = {
@@ -111,16 +95,5 @@ return {
         },
       },
     })
-
-    -- Globally configure all LSP floating preview popups (like hover, signature help, etc)
-    local open_floating_preview_default = vim.lsp.util.open_floating_preview
-
-    local open_floating_preview_default_dup = function(contents, syntax, opts, ...)
-      opts = opts or {}
-      opts.border = opts.border or "rounded" -- Set border to rounded
-      open_floating_preview_default(contents, syntax, opts, ...)
-    end
-
-    vim.lsp.util.open_floating_preview = open_floating_preview_default_dup
   end,
 }

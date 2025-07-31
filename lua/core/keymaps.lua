@@ -127,10 +127,6 @@ vim.keymap.set("n", "<leader>db", function()
 end, generate_keymap_opts("Debugger: Toggle breakpoint"))
 -- END: Debugger keymaps
 
--- START: Breadcrumb navigation
-vim.keymap.set("n", "<leader>bn", require("dropbar.api").pick, generate_keymap_opts("Breadcrumb: Pick item"))
--- END: Breadcrumb navigation
-
 -- START: Git Keymaps
 vim.keymap.set(
   "n",
