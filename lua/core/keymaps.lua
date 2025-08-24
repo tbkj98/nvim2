@@ -121,12 +121,6 @@ vim.keymap.set("n", "<leader>tmp", ":-tabmove<CR>", generate_keymap_opts("Tabs: 
 vim.keymap.set("n", "<leader>tmn", ":+tabmove<CR>", generate_keymap_opts("Tabs: Move tab to right"))
 -- END: Tabs navigation keymaps
 
--- START: Debugger Keymaps
-vim.keymap.set("n", "<leader>db", function()
-  require("dap").toggle_breakpoint()
-end, generate_keymap_opts("Debugger: Toggle breakpoint"))
--- END: Debugger keymaps
-
 -- START: Git Keymaps
 vim.keymap.set(
   "n",

@@ -1,3 +1,6 @@
+if true then
+  return {}
+end
 return {
   "folke/noice.nvim",
   event = "VeryLazy",
@@ -31,6 +34,10 @@ return {
       },
 
       notify = {
+        enabled = false,
+      },
+
+      cmdline = {
         enabled = false,
       },
     }

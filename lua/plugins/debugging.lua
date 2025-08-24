@@ -49,6 +49,27 @@ local java_configurations = function()
   }
 end
 
+local cpp_configurations = function()
+  return {
+    {
+      name = "Launch file",
+      type = "codelldb",
+      request = "launch",
+      program = function()
+        -- Building symbols
+        vim.cmd("CMakeBuildSymbols")
+        -- Building project
+        vim.cmd("CMakeBuild")
+        -- Pressing keys to continue
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, true, true), "n", true)
+        return vim.fn.getcwd() .. "/build/Application"
+      end,
+      cwd = "${workspaceFolder}",
+      stopOnEntry = false,
+    },
+  }
+end
+
 local setup_debugging_icons = function()
   vim.fn.sign_define("DapBreakpoint", { text = " ", texthl = "DapBreakpoint" })
   vim.fn.sign_define("DapBreakpointCondition", { text = " ", texthl = "DapBreakpoint" })
@@ -57,26 +78,160 @@ local setup_debugging_icons = function()
   vim.fn.sign_define("DapStopped", { text = "󰁕 ", texthl = "DapStopped" })
 end
 
--- NOTE: Only fetch after dap is initialized
 local js_ts_configuration = function()
   return {
+    -- Launch NestJS application in debug mode
     {
       type = "pwa-node",
       request = "launch",
-      name = "Launch file",
-      program = "${file}",
+      name = "Launch NestJS App",
+      program = "${workspaceFolder}/dist/main.js", -- Compiled JS entry point
       cwd = "${workspaceFolder}",
+      env = {
+        NODE_ENV = "development",
+      },
+      sourceMaps = true,
+      skipFiles = { "<node_internals>/**" },
+      resolveSourceMapLocations = {
+        "${workspaceFolder}/**",
+        "!**/node_modules/**",
+      },
+      -- Auto-attach to child processes (useful for NestJS)
+      autoAttachChildProcesses = true,
     },
+
+    -- Launch TypeScript file directly with ts-node
+    {
+      type = "pwa-node",
+      request = "launch",
+      name = "Launch TypeScript with ts-node",
+      program = "${workspaceFolder}/src/main.ts", -- TypeScript entry point
+      cwd = "${workspaceFolder}",
+      runtimeExecutable = "node",
+      runtimeArgs = { "--loader", "ts-node/esm" },
+      env = {
+        NODE_ENV = "development",
+        TS_NODE_PROJECT = "${workspaceFolder}/tsconfig.json",
+      },
+      sourceMaps = true,
+      skipFiles = { "<node_internals>/**" },
+      resolveSourceMapLocations = {
+        "${workspaceFolder}/**",
+        "!**/node_modules/**",
+      },
+    },
+
+    -- Launch with tsx (faster TypeScript runner)
+    {
+      type = "pwa-node",
+      request = "launch",
+      name = "Launch TypeScript with tsx",
+      program = "${workspaceFolder}/src/main.ts",
+      cwd = "${workspaceFolder}",
+      runtimeExecutable = "tsx",
+      env = {
+        NODE_ENV = "development",
+      },
+      sourceMaps = true,
+      skipFiles = { "<node_internals>/**" },
+      console = "integratedTerminal",
+    },
+
+    -- Launch NestJS in watch mode
+    {
+      type = "pwa-node",
+      request = "launch",
+      name = "Launch NestJS (Watch Mode)",
+      program = "${workspaceFolder}/node_modules/@nestjs/cli/bin/nest.js",
+      args = { "start", "--debug", "--watch" },
+      cwd = "${workspaceFolder}",
+      port = 9229,
+      env = {
+        NODE_ENV = "development",
+      },
+      sourceMaps = true,
+      skipFiles = { "<node_internals>/**" },
+      console = "integratedTerminal",
+      restart = true,
+    },
+
+    -- Attach to running NestJS process
     {
       type = "pwa-node",
       request = "attach",
-      name = "Attach",
-      processId = require("dap.utils").pick_process,
+      name = "Attach to NodeJS process",
+      port = 9229, -- Default Node.js debug port
+      localRoot = "${workspaceFolder}",
+      remoteRoot = "${workspaceFolder}",
+      sourceMaps = true,
+      skipFiles = { "<node_internals>/**" },
+      resolveSourceMapLocations = {
+        "${workspaceFolder}/**",
+        "!**/node_modules/**",
+      },
+    },
+
+    -- Debug Jest tests
+    {
+      type = "pwa-node",
+      request = "launch",
+      name = "Debug Jest Tests",
+      program = "${workspaceFolder}/node_modules/.bin/jest",
+      args = { "--runInBand", "--no-coverage", "--no-cache" },
       cwd = "${workspaceFolder}",
+      env = {
+        NODE_ENV = "test",
+      },
+      sourceMaps = true,
+      skipFiles = { "<node_internals>/**" },
+      console = "integratedTerminal",
+    },
+
+    -- Debug specific Jest test file
+    {
+      type = "pwa-node",
+      request = "launch",
+      name = "Debug Current Test File",
+      program = "${workspaceFolder}/node_modules/.bin/jest",
+      args = { "${file}", "--runInBand", "--no-coverage", "--no-cache" },
+      cwd = "${workspaceFolder}",
+      env = {
+        NODE_ENV = "test",
+      },
+      sourceMaps = true,
+      skipFiles = { "<node_internals>/**" },
+      console = "integratedTerminal",
+    },
+
+    -- Debug current TypeScript file
+    {
+      type = "pwa-node",
+      request = "launch",
+      name = "Debug Current TS File",
+      program = "${file}",
+      cwd = "${workspaceFolder}",
+      runtimeExecutable = "tsx",
+      env = {
+        NODE_ENV = "development",
+      },
+      sourceMaps = true,
+      skipFiles = { "<node_internals>/**" },
     },
   }
 end
 
+local setup_keymaps = function()
+  local dap = require("dap")
+
+  vim.keymap.set("n", "<F5>", dap.continue, { desc = "DAP: Start/Continue" })
+  vim.keymap.set("n", "<F10>", dap.step_over, { desc = "DAP: Step Over" })
+  vim.keymap.set("n", "<F11>", dap.step_into, { desc = "DAP: Step Into" })
+  vim.keymap.set("n", "<F12>", dap.step_out, { desc = "DAP: Step Out" })
+  vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint, { desc = "DAP: Toggle Breakpoint" })
+  vim.keymap.set("n", "<leader>dr", dap.repl.open, { desc = "DAP: Open REPL" })
+end
+
+-- @diagnosis: ignore
 -- Inline Debug Text
 return {
   {
@@ -87,7 +242,8 @@ return {
       -- Display debug text as a comment
       commented = true,
       -- Customize virtual text
-      display_callback = function(variable, buf, stackframe, node, options)
+      --- @diagnostic disable-next-line: unused-local
+      display_callback = function(variable, _buf, _stackframe, _node, options)
         if options.virt_text_pos == "inline" then
           return " = " .. variable.value
         else
@@ -209,12 +365,24 @@ return {
       -- https://github.com/mfussenegger/nvim-dap/wiki/Debug-Adapter-installation
       dap.configurations.java = java_configurations()
 
-      -- WARN: Commented out as it is not working
-      -- dap.configurations.javascript = js_ts_configuration()
+      -- TODO: Commented out as it is not working
+      dap.configurations.javascript = js_ts_configuration()
       dap.configurations.typescript = js_ts_configuration()
 
+      -- INFO: setting up cpp debugging
+      dap.configurations.cpp = cpp_configurations()
+
+      dap.adapters.codelldb = {
+        type = "server",
+        port = "${port}",
+        executable = {
+          command = "codelldb", -- `mason.nvim` will make this available
+          args = { "--port", "${port}" },
+        },
+      }
       -- Overrides the default debugging icons
       setup_debugging_icons()
+      setup_keymaps()
     end,
   },
   {
@@ -222,8 +390,11 @@ return {
     dependencies = { "mfussenegger/nvim-dap" },
     config = function()
       local opts = {
-        debugger_path = vim.env.HOME .. "/.local/share/nvim/mason/packages/js-debug-adapter",
-        -- debugger_cmd = { vim.env.HOME .. "/.local/share/nvim/mason/packages/js-debug-adapter/js-debug-adapter" },
+        -- debugger_path = vim.env.HOME .. "/.local/share/nvim/mason/packages/js-debug-adapter",
+        debugger_cmd = {
+          "node",
+          vim.env.HOME .. "/.local/share/nvim/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js",
+        },
         adapters = { "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" },
       }
 

@@ -7,6 +7,15 @@ return {
         cwd_bonus = true,
         frecency = true,
       },
+      preview = {
+        enabled = false,
+      },
+      exclude = {
+        ".git",
+        "node_modules",
+        "build", -- Add other folder names you want to exclude
+        "extlib",
+      },
       win = {},
     },
     scope = { enabled = true },

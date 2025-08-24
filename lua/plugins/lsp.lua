@@ -26,7 +26,6 @@ return {
     local lsp_capabilities = require("blink.cmp").get_lsp_capabilities({}, true)
 
     local mason_lspconfig_opts = {
-      automatic_installation = true,
       ensure_installed = {
         "bashls",
         "clangd",
@@ -39,6 +38,17 @@ return {
         "ts_ls",
         "denols",
         "gopls",
+        "neocmake",
+      },
+      automatic_enable = {
+        exclude = {
+          "lua_ls",
+          "clangd",
+          "jdtls",
+          "ts_ls",
+          "denols",
+          "gopls",
+        },
       },
     }
 
@@ -55,6 +65,7 @@ return {
         "yamlfmt",
         "stylua",
         "gofumpt",
+        "codelldb",
       },
     })
 

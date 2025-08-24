@@ -32,5 +32,7 @@ require("core.options")
 require("core.keymaps")
 -- User auto commands
 require("core.autocommands")
+-- LSP Config
+require("core.lsp")
 -- Custom plugins
 require("custom.recent_files").setup()
