@@ -57,7 +57,7 @@ opt.spelllang = "en_us"
 opt.spell = true
 
 -- Make block cursor
-opt.guicursor = ""
+opt.guicursor = "a:blinkon0"
 
 -- Disable swap file
 opt.swapfile = false
