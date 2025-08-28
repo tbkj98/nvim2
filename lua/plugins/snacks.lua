@@ -20,9 +20,8 @@ return {
     },
     scope = { enabled = true },
   },
-  config = function(_, opts)
+  config = function()
     local snacks = require("snacks")
-    snacks.setup(opts)
 
     vim.keymap.set("n", "<leader>ff", snacks.picker.files, { desc = "Snacks: Find Files" })
     vim.keymap.set("n", "<leader>fr", snacks.picker.smart, { desc = "Snacks: Recent Files" })
