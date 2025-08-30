@@ -30,7 +30,20 @@ return {
         end,
       },
       lualine_z = { "location" },
-      lualine_a = {},
+      lualine_a = {
+        {
+
+          function()
+            local reg = vim.fn.reg_recording()
+            if reg == "" then
+              return ""
+            else
+              return "@" .. reg
+            end
+          end,
+          color = { fg = "#EB8C67", bg = "#222436", gui = "bold" },
+        },
+      },
       lualine_c = {
         {
           -- Customize the filename part of lualine to be parent/filename

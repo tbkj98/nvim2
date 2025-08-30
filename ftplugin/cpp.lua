@@ -22,3 +22,8 @@ end, {})
 vim.api.nvim_create_user_command("CMakeRun", function()
   vim.cmd("!" .. cmake_build_and_run_command)
 end, {})
+
+vim.keymap.set("n", "<leader>pc", ":CMakeConfigure<CR>", { desc = "Project configure", silent = true })
+vim.keymap.set("n", "<leader>pb", ":CMakeBuild<CR>", { desc = "Project build", silent = true })
+vim.keymap.set("n", "<leader>pd", ":CMakeBuildSymbols<CR>", { desc = "Project debug build", silent = true })
+vim.keymap.set("n", "<leader>px", ":CMakeClean<CR>", { desc = "Project clean", silent = true })

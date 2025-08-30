@@ -8,7 +8,7 @@ return {
         frecency = true,
       },
       preview = {
-        enabled = false,
+        enabled = true,
       },
       exclude = {
         ".git",

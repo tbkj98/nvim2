@@ -1,6 +1,3 @@
-if true then
-  return {}
-end
 return {
   "folke/noice.nvim",
   event = "VeryLazy",
@@ -30,15 +27,15 @@ return {
       },
 
       messages = {
-        enabled = false,
+        enabled = true,
       },
 
       notify = {
-        enabled = false,
+        enabled = true,
       },
 
       cmdline = {
-        enabled = false,
+        enabled = true,
       },
     }
 
