@@ -12,12 +12,12 @@ config.color_scheme = "tokyonight"
 -- config.color_scheme = "Gruvbox Material (Gogh)"
 
 -- Fonts
-config.font = wezterm.font("FiraCode Nerd Font Mono", { weight = "Regular" })
+config.font = wezterm.font("FiraCode Nerd Font", { weight = "Regular" })
 -- config.font = wezterm.font("ComicShannsMono Nerd Font")
 -- config.font = wezterm.font("SauceCodePro Nerd Font Mono")
 -- config.font = wezterm.font("MesloLGM Nerd Font Mono")
 -- config.font = wezterm.font("UbuntuSansMono Nerd Font Mono")
-config.font_size = 13.5
+config.font_size = 15
 config.line_height = 1.0
 
 -- Background opacity
@@ -38,6 +38,20 @@ config.window_frame = {
 
 config.warn_about_missing_glyphs = false
 config.audible_bell = "Disabled"
+
+-- To make it work on hyprland
+config.enable_wayland = false
+
+local function tmux_exists()
+  local handle = io.popen("command -v tmux")
+  local result = handle:read("*a")
+  handle:close()
+  return result ~= nil and result ~= ''
+end
+
+if tmux_exists() then
+	-- config.default_prog = { "tmux" }
+end
 
 -- and finally, return the configuration to wezterm
 return config
